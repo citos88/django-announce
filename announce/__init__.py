@@ -55,7 +55,8 @@ class AnnounceClient(object):
         """
         path = '/auth/group/%s/%s' % (group_name, user_id)
         response = self._do_request('POST', path)
-        response.read()
+        if response:
+            response.read()
 
     def unregister_group(self, user_id, group_name):
         """
@@ -63,7 +64,8 @@ class AnnounceClient(object):
         """
         path = '/auth/group/%s/%s' % (group_name, user_id)
         response = self._do_request('DELETE', path)
-        response.read()
+        if response:
+            response.read()
 
 
     def emit(self, user_id, channel, data):
@@ -76,7 +78,8 @@ class AnnounceClient(object):
         headers = {'Content-Type' : 'application/json'}
         data = json.dumps(data)
         response = self._do_request('POST', path, data, headers)
-        response.read()
+        if response:
+            response.read()
 
     def broadcast_group(self, group_name, channel, data):
         """
@@ -87,7 +90,8 @@ class AnnounceClient(object):
         headers = {'Content-Type' : 'application/json'}
         data = json.dumps(data)
         response = self._do_request('POST', path, data, headers)
-        response.read()
+        if response:
+            response.read()
 
     def broadcast_room(self, channel, data):
         """
@@ -98,7 +102,8 @@ class AnnounceClient(object):
         headers = {'Content-Type' : 'application/json'}
         data = json.dumps(data)
         response = self._do_request('POST', path, data, headers)
-        response.read()
+        if response:
+            response.read()
 
     def broadcast(self, channel, data):
         """
@@ -108,7 +113,8 @@ class AnnounceClient(object):
         headers = {'Content-Type' : 'application/json'}
         data = json.dumps(data)
         response = self._do_request('POST', path, data, headers)
-        response.read()
+        if response:
+            response.read()
 
     def get_room_status(self, channel):
         """
@@ -117,9 +123,11 @@ class AnnounceClient(object):
         """
         path = '/status/room/%s' % (channel)
         response = self._do_request('GET', path)
-        data = response.read()
-        try:
-            return json.loads(data)
-        except ValueError:
-            return None
+        if response:
+            data = response.read()
+            try:
+                return json.loads(data)
+            except ValueError:
+                return None
+        return None
 
